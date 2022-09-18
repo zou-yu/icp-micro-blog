@@ -1,5 +1,72 @@
+import List "mo:base/List";
+import Iter "mo:base/Iter";
+import Principal "mo:base/Principal";
+import Time "mo:base/Time";
+
 actor {
-  public func greet(name : Text) : async Text {
-    return "Hello, " # name # "!";
+  
+  public type Message = {
+    content: Text;
+    time: Time.Time;
+    author: Text;
+  };
+
+  public type Microblog = actor {
+    follow: shared (Principal) -> async();
+    follows: shared query () -> async [Principal];
+    post: shared (Text) -> async();
+    posts: shared query (since: Time.Time) -> async [Message];
+    timeline: shared (since: Time.Time) -> async [Message];
+  };
+
+  stable var followed : List.List<Principal> = List.nil();
+  stable var messages : List.List<Message> = List.nil();
+  stable var author: Text = "anonymous";
+
+  public shared func follow(id: Principal) : async() {
+    followed := List.push(id, followed);
+  };
+
+  public shared query func follows() : async [Principal] {
+    List.toArray(followed)
+  };
+
+  public shared func post(text: Text) : async () {
+    messages := List.push({
+        content = text;
+        time = Time.now();
+        author = author;
+    }, messages);
+  };
+
+  public shared query func posts(since: Time.Time) : async [Message] {
+    List.toArray(
+        List.filter(messages, func (message: Message) : Bool {
+            since <= message.time
+        })
+    )
+  };
+
+  public shared func timeline(since: Time.Time) : async [Message] {
+    var all : List.List<Message> = List.nil();
+
+    for (id in Iter.fromList(followed)) {
+        let canister : Microblog = actor(Principal.toText(id));
+        let msgs = await canister.posts(since);
+        for (msg in Iter.fromArray(msgs)) {
+            all := List.push(msg, all);
+        };
+
+    };
+    List.toArray(all)
+
+  };
+  
+  public func set_author(_author : Text) : async () {
+    author := _author;
+  };
+  
+  public func get_author() : async Text {
+    author
   };
 };

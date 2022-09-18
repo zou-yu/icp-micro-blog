@@ -4,6 +4,10 @@
       "main": "src/micro_blog_backend/main.mo",
       "type": "motoko"
     },
+    "micro_blog_backend2": {
+        "main": "src/micro_blog_backend/main.mo",
+        "type": "motoko"
+      },
     "micro_blog_frontend": {
       "dependencies": [
         "micro_blog_backend"
