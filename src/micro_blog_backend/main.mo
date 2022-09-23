@@ -6,7 +6,7 @@ import Time "mo:base/Time";
 actor {
   
   public type Message = {
-    content: Text;
+    text: Text;
     time: Time.Time;
     author: Text;
   };
@@ -31,12 +31,17 @@ actor {
     List.toArray(followed)
   };
 
-  public shared func post(text: Text) : async () {
+  public shared func post(otp: Text, text: Text) : async () {
+    assert(otp == "123456");
     messages := List.push({
-        content = text;
+        text = text;
         time = Time.now();
         author = author;
     }, messages);
+  };
+
+  public shared func remove_follows() : async () {
+    followed := List.nil();
   };
 
   public shared query func posts(since: Time.Time) : async [Message] {
@@ -62,11 +67,11 @@ actor {
 
   };
   
-  public func set_author(_author : Text) : async () {
+  public func set_name(_author : Text) : async () {
     author := _author;
   };
   
-  public func get_author() : async Text {
+  public func get_name() : async Text {
     author
   };
 };

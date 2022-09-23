@@ -3,22 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>micro_blog</title>
+    <title>Micro blog</title>
     <base href="/" />
     <link rel="icon" href="favicon.ico" />
-    <link type="text/css" rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <script src="./index.js"></script>
   </head>
   <body>
+    <header><h1>Micro blog</h1></header>
     <main>
-      <img src="logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#">
-        <label for="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting"></section>
+      <label for="message">What do you want to post?</label>
+      <textarea id="message"></textarea>
+      <label for="otp">OTP</label>
+      <input id="otp"></textarea>
+      <button id="post">POST</button>
+      <div>
+        <h2>My Posts</h2>
+        <section id="posts">
+
+        </section>
+      </div>
+
+      <div>
+        <h2>Follows</h2>
+        <section id="follows">
+
+        </section>
+      </div>
+
+      <div>
+        <h2>Timeline</h2>
+        <section id="timeline">
+
+        </section>
+      </div>
+      
     </main>
   </body>
 </html>
